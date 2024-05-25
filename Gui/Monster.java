@@ -10,8 +10,9 @@ abstract class Monster {
     private boolean changed;
     public boolean hasHeal = true;
     public boolean hasVampire = true;
+    private String gif;
 
-    public Monster(String name, String element, String strengthAgainst) {
+    public Monster(String name, String element, String strengthAgainst, String gif) {
         this.name = name;
         this.level = 1;
         this.element = element;
@@ -19,9 +20,11 @@ abstract class Monster {
         this.setHp();
         this.ep = 0;
         this.changed = false;
+        this.gif = gif;
     }
 
-    public Monster(String name, String element, String strengthAgainst, int level) {
+    public Monster(String name, String element, String strengthAgainst, int level, String gif) {
+        this.gif = gif;
         this.name = name;
         this.level = level;
         this.element = element;
@@ -30,7 +33,8 @@ abstract class Monster {
         this.ep = 0;
     }
 
-    public Monster(String name, int level, int hp, int ep, String element, String strengthAgainst, boolean changed) {
+    public Monster(String name, int level, int hp, int ep, String element, String strengthAgainst, boolean changed, String gif) {
+        this.gif = gif;
         this.name = name;
         this.level = level;
         this.hp = hp;

@@ -2,19 +2,19 @@ package Gui;
 
 public class MonsterEs extends Monster {
     MonsterEs(String name) {
-        super(name, "Es", "Angin");  // Ice is strong against Ground
+        super(name, "Es", "Angin", "_api_.png");  // Ice is strong against Ground
     }
 
     MonsterEs(String name, int level) {
-        super(name, "Es", "Angin", level);  // Ice is strong against Ground
+        super(name, "Es", "Angin", level, "_api_.png");  // Ice is strong against Ground
     }
 
     MonsterEs(String name, int level, int hp, int ep, boolean changed) {
-        super(name, level, hp, ep, "Es", "Angin", changed);
+        super(name, level, hp, ep, "Es", "Angin", changed, "_api_.png");
     }
 
     MonsterEs(Monster a) {
-        super(a.getName(), a.getLevel(), a.getHp(), a.getEp(), "Es", "Angin", true);
+        super(a.getName(), a.getLevel(), a.getHp(), a.getEp(), "Es", "Angin", true, "_api_.png");
     }
 
     @Override

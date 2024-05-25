@@ -99,7 +99,7 @@ public class Home {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 SwingUtilities.invokeLater(() -> {
-                    new SellectPokemon();
+                    new SellectPokemon(player);
                 });
             }
         });

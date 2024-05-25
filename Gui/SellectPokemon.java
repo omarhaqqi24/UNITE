@@ -5,9 +5,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 public class SellectPokemon {
-    public SellectPokemon(){
+    Player player;
+
+    public SellectPokemon(Player player){
+        this.player = player;
+
         JFrame frame = new JFrame("UNITE");
         // Mengatur ukuran frame
         frame.setSize(1920, 1080);
@@ -19,12 +25,12 @@ public class SellectPokemon {
         frame.add(layeredPane);
 
         // Memanggil method placeComponents untuk menambahkan gambar
-        placeComponents(layeredPane, frame);
+        placeComponents(layeredPane, frame, player);
 
         frame.setVisible(true);
     }
 
-    public static void placeComponents(JLayeredPane layeredPane, JFrame frame) {
+    public static void placeComponents(JLayeredPane layeredPane, JFrame frame, Player player) {
         ImageIcon imageIcon = new ImageIcon("Aset/SellectPokemon.png");
         JLabel imageLabel = new JLabel(imageIcon);
         imageLabel.setBounds(0, -60, imageIcon.getIconWidth(), imageIcon.getIconHeight());
@@ -32,6 +38,12 @@ public class SellectPokemon {
 
         ImageIcon checked = new ImageIcon("Aset/checked.png");
         ImageIcon unchecked = new ImageIcon("Aset/unchecked.png");
+        
+        ArrayList<Monster> monsters = player.getMonsters();
+        int x = 75;
+        for (Monster m : monsters) {
+            
+        }
         
         JLabel select1 = new JLabel();
         AtomicBoolean s1 = new AtomicBoolean(false);
@@ -222,7 +234,7 @@ public class SellectPokemon {
 
     public static void main(String[] args) {
         // Membuat objek Home
-        new SellectPokemon();
+        new SellectPokemon(new Player("Player"));
     }
 }
 

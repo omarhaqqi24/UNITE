@@ -2,19 +2,19 @@ package Gui;
 
 public class MonsterAir extends Monster {
     MonsterAir(String name) {
-        super(name, "Air", "Api");  // Water is strong against Fire
+        super(name, "Air", "Api", "_air_.png");  // Water is strong against Fire
     }
     
     MonsterAir(String name, int level) {
-        super(name, "Air", "Api", level);  // Water is strong against Fire
+        super(name, "Air", "Api", level, "_air_.png");  // Water is strong against Fire
     }
 
     MonsterAir(String name, int level, int hp, int ep, boolean changed) {
-        super(name, level, hp, ep, "Air", "Api", changed);
+        super(name, level, hp, ep, "Air", "Api", changed, "_air_.png");
     }
 
     MonsterAir(Monster a) {
-        super(a.getName(), a.getLevel(), a.getHp(), a.getEp(), "Air", "Api", true);
+        super(a.getName(), a.getLevel(), a.getHp(), a.getEp(), "Air", "Api", true, "_air_.png");
     }
 
     @Override
