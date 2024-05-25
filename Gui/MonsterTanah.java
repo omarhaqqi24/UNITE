@@ -2,19 +2,19 @@ package Gui;
 
 public class MonsterTanah extends Monster {
     MonsterTanah(String name) {
-        super(name, "Tanah", "Air", "_tanah_.png");  // Ground is strong against Electric
+        super(name, "Tanah", "Air", "_tanah_.gif");  // Ground is strong against Electric
     }
     
     MonsterTanah(String name, int level) {
-        super(name, "Tanah", "Air", level, "_tanah_.png");  // Ground is strong against Electric
+        super(name, "Tanah", "Air", level, "_tanah_.gif");  // Ground is strong against Electric
     }
 
     MonsterTanah(String name, int level, int hp, int ep, boolean changed) {
-        super(name, level, hp, ep, "Tanah", "Air", changed, "_tanah_.png");
+        super(name, level, hp, ep, "Tanah", "Air", changed, "_tanah_.gif");
     }
 
     MonsterTanah(Monster a) {
-        super(a.getName(), a.getLevel(), a.getHp(), a.getEp(), "Tanah", "Air", true, "_tanah_.png");
+        super(a.getName(), a.getLevel(), a.getHp(), a.getEp(), "Tanah", "Air", true, "_tanah_.gif");
     }
 
     @Override

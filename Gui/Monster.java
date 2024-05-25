@@ -44,6 +44,10 @@ abstract class Monster {
         this.changed = changed;
     }
 
+    public String getGif() {
+        return gif;
+    }
+
     public boolean getChanged() {
         return changed;
     }
