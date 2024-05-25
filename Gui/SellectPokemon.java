@@ -27,53 +27,61 @@ public class SellectPokemon {
         imageLabel.setBounds(0, -60, imageIcon.getIconWidth(), imageIcon.getIconHeight());
         layeredPane.add(imageLabel, Integer.valueOf(2));
 
-        ImageIcon imageIcon1 = new ImageIcon("Aset/angin.gif");
+        JLabel select1 = new JLabel("Pokemon 1");
+        select1.setBounds(75, 280, 200, 50);
+        select1.setOpaque(true);
+        select1.setBackground(Color.GREEN);
+        select1.setForeground(Color.WHITE);
+        select1.setHorizontalAlignment(SwingConstants.CENTER);
+        layeredPane.add(select1, Integer.valueOf(3));
+
+        ImageIcon imageIcon1 = new ImageIcon("Aset/_angin_.gif");
         JLabel imageLabel1 = new JLabel(imageIcon1);
-        imageLabel1.setBounds(75, 450, imageIcon1.getIconWidth(), imageIcon1.getIconHeight());
+        imageLabel1.setBounds(75, 330, imageIcon1.getIconWidth(), imageIcon1.getIconHeight());
         layeredPane.add(imageLabel1, Integer.valueOf(3));
         
-        ImageIcon imageIcon2 = new ImageIcon("Aset/es2.gif");
+        ImageIcon imageIcon2 = new ImageIcon("Aset/_es_.gif");
         JLabel imageLabel2 = new JLabel(imageIcon2);
-        imageLabel2.setBounds(300, 150, 100, 100/imageIcon2.getIconWidth() * imageIcon2.getIconHeight());
+        imageLabel2.setBounds(310, 330, imageIcon2.getIconWidth(), imageIcon2.getIconHeight());
         layeredPane.add(imageLabel2, Integer.valueOf(3));
 
-        ImageIcon imageIcon3 = new ImageIcon("Aset/api.gif");
+        ImageIcon imageIcon3 = new ImageIcon("Aset/_api_.gif");
         JLabel imageLabel3 = new JLabel(imageIcon3);
-        imageLabel3.setBounds(600, 525, imageIcon3.getIconWidth(), imageIcon3.getIconHeight());
+        imageLabel3.setBounds(545, 330, imageIcon3.getIconWidth(), imageIcon3.getIconHeight());
         layeredPane.add(imageLabel3, Integer.valueOf(3));
 
-        ImageIcon imageIcon4 = new ImageIcon("Aset/air2.gif");
+        ImageIcon imageIcon4 = new ImageIcon("Aset/_air_.gif");
         JLabel imageLabel4 = new JLabel(imageIcon4);
-        imageLabel4.setBounds(780, 520, imageIcon4.getIconWidth(), imageIcon4.getIconHeight());
+        imageLabel4.setBounds(780, 330, imageIcon4.getIconWidth(), imageIcon4.getIconHeight());
         layeredPane.add(imageLabel4, Integer.valueOf(4));
 
-        ImageIcon imageIcon5 = new ImageIcon("Aset/baru.gif");
+        ImageIcon imageIcon5 = new ImageIcon("Aset/_tanah_.gif");
         JLabel imageLabel5 = new JLabel(imageIcon5);
-        imageLabel5.setBounds(980, 280, imageIcon5.getIconWidth(), imageIcon5.getIconHeight());
+        imageLabel5.setBounds(1015, 330, imageIcon5.getIconWidth(), imageIcon5.getIconHeight());
         layeredPane.add(imageLabel5, Integer.valueOf(4));
 
         JButton sellectButton1 = new JButton("1");
-        sellectButton1.setBounds(75, 350, 200, 300);
+        sellectButton1.setBounds(75, 330, 200, 300);
         sellectButton1.setBackground(Color.GREEN);
         layeredPane.add(sellectButton1, Integer.valueOf(2));
 
         JButton sellectButton2 = new JButton("2");
-        sellectButton2.setBounds(310, 350, 200, 300);
+        sellectButton2.setBounds(310, 330, 200, 300);
         sellectButton2.setBackground(Color.GREEN);
         layeredPane.add(sellectButton2, Integer.valueOf(2));
 
         JButton sellectButton3 = new JButton("3");
-        sellectButton3.setBounds(540, 350, 200, 300);
+        sellectButton3.setBounds(545, 330, 200, 300);
         sellectButton3.setBackground(Color.GREEN);
         layeredPane.add(sellectButton3, Integer.valueOf(2));
 
         JButton sellectButton4 = new JButton("4");
-        sellectButton4.setBounds(772, 350, 200, 300);
+        sellectButton4.setBounds(780, 330, 200, 300);
         sellectButton4.setBackground(Color.GREEN);
         layeredPane.add(sellectButton4, Integer.valueOf(2));
 
         JButton sellectButton5 = new JButton("5");
-        sellectButton5.setBounds(1003, 350, 200, 300);
+        sellectButton5.setBounds(1015, 330, 200, 300);
         sellectButton5.setBackground(Color.GREEN);
         layeredPane.add(sellectButton5, Integer.valueOf(2));
 
