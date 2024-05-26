@@ -141,7 +141,7 @@ public class Welcome {
 
                         LinkedList<JLabel> labels = new LinkedList<>();
 
-                        int y = 70;
+                        int y = 60;
                         while (myReader.hasNextLine()) {
                             String data = myReader.nextLine();
                             users.add(data);

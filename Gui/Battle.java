@@ -3,17 +3,24 @@ package Gui;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
+
 import javax.sound.sampled.*;
 
 public class Battle {
-    public static void main(String[] args) {
+    private ArrayList<Monster> selected;
+
+    public Battle (ArrayList<Monster> selected) {
+        this.selected = selected;
         JFrame frame = new JFrame("UNITE");
         frame.setSize(1920, 1080);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLayeredPane layeredPane = new JLayeredPane();
         frame.add(layeredPane);
+      
         placeComponents(layeredPane, frame);
         frame.setVisible(true);
+
 
         // Putar musik latar belakang
         playBackgroundMusic("Aset/naruto.wav");
@@ -29,53 +36,102 @@ public class Battle {
         imageLabel.setBounds(0, 0, 1296,729);
         layeredPane.add(imageLabel, Integer.valueOf(0));
 
-        // layeredPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()));
+        //icon vs
+        
+        //nama hero kita
+        JLabel pokemon = new JLabel("Chairman");
+        pokemon.setBackground(null);
+        pokemon.setBounds(20,-290,400,600);
+        pokemon.setFont(new Font("Arial", Font.ITALIC,20));
+        layeredPane.add(pokemon, Integer.valueOf(2));
+        pokemon.setForeground(Color.WHITE);
 
-        ImageIcon atkIcon = new ImageIcon("Aset/logokucing.png");
+        ImageIcon BarHp = new ImageIcon("Aset/hp_border.png");
+        Image bar2 = BarHp.getImage(); // Mendapatkan gambar sebagai objek Image
+        Image resizedBarHp = bar2.getScaledInstance(350, 52, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        ImageIcon resizedBarHpIcon= new ImageIcon(resizedBarHp); // Mengonversi kembali ke ImageIcon
+        JLabel BarHpLabel = new JLabel(resizedBarHpIcon); // Membuat label dengan gambar yang sudah diresize
+        BarHpLabel.setBounds(-178, 0, 700, 103);
+        layeredPane.add(BarHpLabel, Integer.valueOf(2));
+
+        //nama hero musuh 
+        JLabel pokemon2 = new JLabel("Chairman");
+        pokemon2.setBackground(null);
+        pokemon2.setBounds(1155,-290,400,600);
+        pokemon2.setFont(new Font("Arial", Font.ITALIC,20));
+        layeredPane.add(pokemon2, Integer.valueOf(2));
+        pokemon2.setForeground(Color.WHITE);
+        //bar HP musuh
+        ImageIcon BarHp2 = new ImageIcon("Aset/hp_border.png");
+        Image bar3 = BarHp2.getImage(); // Mendapatkan gambar sebagai objek Image
+        Image resizedBarHp2 = bar3.getScaledInstance(350, 52, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        ImageIcon resizedBarHpIcon2= new ImageIcon(resizedBarHp2); // Mengonversi kembali ke ImageIcon
+        JLabel BarHpLabel2 = new JLabel(resizedBarHpIcon2); // Membuat label dengan gambar yang sudah diresize
+        BarHpLabel2.setBounds(750, 0, 700, 103);
+        layeredPane.add(BarHpLabel2, Integer.valueOf(2));
+
+        ImageIcon atkIcon = new ImageIcon("Aset/elementbg.png");
         Image image = atkIcon.getImage(); // Mendapatkan gambar sebagai objek Image
-        Image resizedImage = image.getScaledInstance(600, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        Image resizedImage = image.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon = new ImageIcon(resizedImage); // Mengonversi kembali ke ImageIcon
         JLabel atkLabel = new JLabel(resizedatkIcon); // Membuat label dengan gambar yang sudah diresize
-        atkLabel.setBounds(616, 279, 400, 600);
+        atkLabel.setBounds(616, 422, 400, 300);
         layeredPane.add(atkLabel, Integer.valueOf(2));
 
-        ImageIcon atkIcon2 = new ImageIcon("Aset/17.png");
+        JButton logokucing = new JButton("1");
+        logokucing.setBounds(772, 550, 70, 60);
+        layeredPane.add(logokucing, Integer.valueOf(2));
+
+        ImageIcon atkIcon2 = new ImageIcon("Aset/healbg.png");
         Image image2 = atkIcon2.getImage(); // Mendapatkan gambar sebagai objek Image
-        Image resizedImage2 = image2.getScaledInstance(600, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        Image resizedImage2 = image2.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon2= new ImageIcon(resizedImage2); // Mengonversi kembali ke ImageIcon
         JLabel atkLabel2 = new JLabel(resizedatkIcon2); // Membuat label dengan gambar yang sudah diresize
-        atkLabel2.setBounds(250, 250, 400, 600);
+        atkLabel2.setBounds(250, 424, 400, 300);
         layeredPane.add(atkLabel2, Integer.valueOf(2));
+
+        JButton item  = new JButton("2");
+        item.setBounds(415, 550, 70,60);
+        layeredPane.add(item, Integer.valueOf(2));
+
         
-        ImageIcon atkIcon3 = new ImageIcon("Aset/18.png");
+        ImageIcon atkIcon3 = new ImageIcon("Aset/kaburbg.png");
         Image image3 = atkIcon3.getImage(); // Mendapatkan gambar sebagai objek Image
-        Image resizedImage3 = image3.getScaledInstance(600, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        Image resizedImage3 = image3.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon3= new ImageIcon(resizedImage3); // Mengonversi kembali ke ImageIcon
         JLabel atkLabel3 = new JLabel(resizedatkIcon3); // Membuat label dengan gambar yang sudah diresize
-        atkLabel3.setBounds(422, 250, 400, 600);
+        atkLabel3.setBounds(336, 425, 400, 300);
         layeredPane.add(atkLabel3, Integer.valueOf(2));
 
-        ImageIcon atkIcon4 = new ImageIcon("Aset/19.png");
+        
+        JButton kabur  = new JButton("3");
+        kabur.setBounds(510, 550, 70, 60);
+        layeredPane.add(kabur, Integer.valueOf(2));
+
+        ImageIcon atkIcon4 = new ImageIcon("Aset/pedangBg.png");
         Image image4 = atkIcon4.getImage(); // Mendapatkan gambar sebagai objek Image
-        Image resizedImage4 = image4.getScaledInstance(600, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        Image resizedImage4 = image4.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon4= new ImageIcon(resizedImage4); // Mengonversi kembali ke ImageIcon
         JLabel atkLabel4 = new JLabel(resizedatkIcon4); // Membuat label dengan gambar yang sudah diresize
-        atkLabel4.setBounds(509, 323, 400, 600);
-        layeredPane.add(atkLabel4, Integer.valueOf(2));
+        atkLabel4.setBounds(523, 422, 400, 300);
+        layeredPane.add(atkLabel4, Integer.valueOf(3));
 
-        ImageIcon atkIcon5 = new ImageIcon("Aset/20.png");
+        JButton spesial  = new JButton("A");
+        spesial.setBounds(684, 550, 70, 60);
+        layeredPane.add(spesial, Integer.valueOf(2));
+
+        ImageIcon atkIcon5 = new ImageIcon("Aset/spessAtbg.png");
         Image image5 = atkIcon5.getImage(); // Mendapatkan gambar sebagai objek Image
-        Image resizedImage5 = image5.getScaledInstance(600, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        Image resizedImage5 = image5.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon5= new ImageIcon(resizedImage5); // Mengonversi kembali ke ImageIcon
         JLabel atkLabel5 = new JLabel(resizedatkIcon5); // Membuat label dengan gambar yang sudah diresize
-        atkLabel5.setBounds(512, 323, 400, 600);
-        layeredPane.add(atkLabel5, Integer.valueOf(2));
+        atkLabel5.setBounds(429,423, 400, 300);
+        layeredPane.add(atkLabel5, Integer.valueOf(3));
 
-        // ImageIcon atkicon2 = new ImageIcon("Aset/17.png");
-        // JLabel atklabel2 = new JLabel(atkicon2);
-        // atklabel2.setBounds(0, -60, atkicon2.getIconWidth(),atkicon2.getIconHeight());
-        // layeredPane.add(atklabel2, Integer.valueOf(2));
-
+        //ini untuk spesial attack 
+        JButton attack  = new JButton("4");
+        attack.setBounds(598, 550, 70, 60);
+        layeredPane.add(attack, Integer.valueOf(2));
         
     }
 

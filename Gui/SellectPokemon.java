@@ -40,15 +40,36 @@ public class SellectPokemon {
         JLabel imageLabel = new JLabel(imageIcon);
         imageLabel.setBounds(0, -60, imageIcon.getIconWidth(), imageIcon.getIconHeight());
         layeredPane.add(imageLabel, Integer.valueOf(2));
+        
+        ImageIcon wIcon = new ImageIcon("Aset/max3.png");
+        JLabel warning = new JLabel(wIcon);
+        warning.setBounds(545, 100, 200, 200);
+        warning.setVisible(false);
+        layeredPane.add(warning, Integer.valueOf(3));
 
         ImageIcon checked = new ImageIcon("Aset/checked.png");
         ImageIcon unchecked = new ImageIcon("Aset/unchecked.png");
         
         ArrayList<Monster> monsters = player.getMonsters();
-        LinkedList<JLabel> desc = new LinkedList<>();
         LinkedList<JLabel> selectBtn = new LinkedList<>();
         LinkedList<JLabel> pokemon = new LinkedList<>();
         ArrayList<Monster> selected = new ArrayList<>();
+        LinkedList<AtomicBoolean> s = new LinkedList<>();
+
+        ImageIcon next = new ImageIcon("Aset/next.gif");
+        JLabel nxt = new JLabel(next);
+        nxt.setBounds(1170, 25, 82, 89);
+        nxt.setVisible(false);
+        nxt.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked (MouseEvent e) {
+                frame.dispose();
+                SwingUtilities.invokeLater(() -> {
+                    new Battle(selected);
+                });
+            }
+        });
+        layeredPane.add(nxt, Integer.valueOf(3));
 
         InputStream fontStream = null;
         Font retro = null;
@@ -70,22 +91,22 @@ public class SellectPokemon {
             }
         }
 
-        JLabel nameLevel = new JLabel("Charmander - Fire (Lvl.2)");
+        JLabel nameLevel = new JLabel("-");
         nameLevel.setFont(retro);
         nameLevel.setBounds(110, 140, 300, 40);
         layeredPane.add(nameLevel, Integer.valueOf(3));
 
-        JLabel hp = new JLabel("HP = 100");
+        JLabel hp = new JLabel("HP = -");
         hp.setFont(retro);
         hp.setBounds(110, 165, 300, 40);
         layeredPane.add(hp, Integer.valueOf(3));
 
-        JLabel xp = new JLabel("XP = 12");
+        JLabel xp = new JLabel("XP = -");
         xp.setFont(retro);
         xp.setBounds(110, 190, 300, 40);
         layeredPane.add(xp, Integer.valueOf(3));
 
-        JLabel strengthAgainst = new JLabel("Strent Against Ice");
+        JLabel strengthAgainst = new JLabel("Strength Against -");
         strengthAgainst.setFont(retro);
         strengthAgainst.setBounds(110, 215, 300, 40);
         layeredPane.add(strengthAgainst, Integer.valueOf(3));
@@ -99,7 +120,7 @@ public class SellectPokemon {
         for (Monster m : monsters) {
 
             JLabel select1 = new JLabel();
-            AtomicBoolean s1 = new AtomicBoolean(false);
+            s.add(new AtomicBoolean(false));
             select1.setIcon(unchecked);
             select1.setBounds(x + 75, 320, 50, 50);
             select1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -107,15 +128,30 @@ public class SellectPokemon {
             select1.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if (s1.get()) {
-                        s1.set(false);
-                        select1.setIcon(checked);
+                    if (s.get(monsters.indexOf(m)).get()) {
+                        select1.setIcon(unchecked);
+                        s.get(monsters.indexOf(m)).set(false);
                         selected.remove(m);
                     } else {
-                        selected.add(monsters.get(monsters.indexOf(m)));
-                        s1.set(true);
-                        select1.setIcon(unchecked);
+                        if (selected.size() == 3) {
+                            warning.setVisible(true);
+                            Timer timer = new Timer(1000, new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    warning.setVisible(false);
+                                }
+                            });
+                            timer.setRepeats(false);
+                            timer.start();
+                        } else {
+                            selected.add(monsters.get(monsters.indexOf(m)));
+                            select1.setIcon(checked);
+                            s.get(monsters.indexOf(m)).set(true);
+                        }
                     }
+                    
+                    if (selected.size() > 0) nxt.setVisible(true);
+                    else nxt.setVisible(false);
                 }
             });
     
@@ -182,7 +218,7 @@ public class SellectPokemon {
                     nameLevel.setText(m.getName() + " - " + el + " (Lvl." + m.getLevel() + ")");
                     hp.setText("HP = " + m.getHp());
                     xp.setText("XP = " + m.getEp());
-                    strengthAgainst.setText("Strent Against " + sa);
+                    strengthAgainst.setText("Strength Against " + sa);
                 }
             });
 
@@ -295,67 +331,6 @@ public class SellectPokemon {
         // JLabel imageLabel5 = new JLabel(imageIcon5);
         // imageLabel5.setBounds(1015, 330, imageIcon5.getIconWidth(), imageIcon5.getIconHeight());
         // layeredPane.add(imageLabel5, Integer.valueOf(4));
-
-        JButton sellectButton1 = new JButton("1");
-        sellectButton1.setBounds(75, 330, 200, 300);
-        sellectButton1.setBackground(Color.GREEN);
-        layeredPane.add(sellectButton1, Integer.valueOf(2));
-
-        JButton sellectButton2 = new JButton("2");
-        sellectButton2.setBounds(310, 330, 200, 300);
-        sellectButton2.setBackground(Color.GREEN);
-        layeredPane.add(sellectButton2, Integer.valueOf(2));
-
-        JButton sellectButton3 = new JButton("3");
-        sellectButton3.setBounds(545, 330, 200, 300);
-        sellectButton3.setBackground(Color.GREEN);
-        layeredPane.add(sellectButton3, Integer.valueOf(2));
-
-        JButton sellectButton4 = new JButton("4");
-        sellectButton4.setBounds(780, 330, 200, 300);
-        sellectButton4.setBackground(Color.GREEN);
-        layeredPane.add(sellectButton4, Integer.valueOf(2));
-
-        JButton sellectButton5 = new JButton("5");
-        sellectButton5.setBounds(1015, 330, 200, 300);
-        sellectButton5.setBackground(Color.GREEN);
-        layeredPane.add(sellectButton5, Integer.valueOf(2));
-
-        sellectButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-                NewGame.main(null);
-            }
-        });
-        sellectButton2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-                NewGame.main(null);
-            }
-        });
-        sellectButton3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-                NewGame.main(null);
-            }
-        });
-        sellectButton4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-                NewGame.main(null);
-            }
-        });
-        sellectButton5.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-                NewGame.main(null);
-            }
-        });
     }
 
     public static void main(String[] args) {
@@ -363,5 +338,3 @@ public class SellectPokemon {
         new SellectPokemon(new Player("Player"));
     }
 }
-
-
