@@ -106,6 +106,8 @@ public class Welcome {
 
                 try {
                     File myObj = new File("save/user.txt");
+                    if (myObj == null) SaveNotFound.throwItemSaveNotFound("user.txt Not Found");
+                    
                     Scanner myReader = new Scanner(myObj);
 
                     System.out.println("Select an user:");
