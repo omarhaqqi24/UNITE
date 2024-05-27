@@ -8,6 +8,10 @@ public class MonsterAngin extends Monster {
     MonsterAngin(String name, int level) {
         super(name, "Angin", "Tanah", level, "_angin2_.gif");  // Wind is strong against Fire
     }
+    
+    MonsterAngin(String name, int level, String gif) {
+        super(name, "Angin", "Tanah", level, gif);  // Wind is strong against Fire
+    }
 
     MonsterAngin(String name, int level, int hp, int ep, boolean changed) {
         super(name, level, hp, ep, "Angin", "Tanah", changed, "_angin2_.gif");

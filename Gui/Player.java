@@ -27,6 +27,14 @@ class Player {
         this.dungeon = new Dungeon(this);
     }
 
+    public Dungeon getDungeon () {
+        return dungeon;
+    }
+
+    public ArrayList<Monster> getEnemyMonsters () {
+        return dungeon.getMonster();
+    }
+
     public Player(String nama, ArrayList<Monster> monsters) {
         this.nama = nama;
         this.monsters = monsters;

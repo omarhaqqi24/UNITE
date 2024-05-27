@@ -9,6 +9,10 @@ public class MonsterEs extends Monster {
         super(name, "Es", "Angin", level, "_es_.gif");  // Ice is strong against Ground
     }
 
+    MonsterEs(String name, int level, String gif) {
+        super(name, "Es", "Angin", level, gif);  // Ice is strong against Ground
+    }
+
     MonsterEs(String name, int level, int hp, int ep, boolean changed) {
         super(name, level, hp, ep, "Es", "Angin", changed, "_es_.gif");
     }

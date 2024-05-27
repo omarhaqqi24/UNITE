@@ -61,7 +61,7 @@ public class SellectPokemon {
             @Override
             public void mouseClicked(MouseEvent e) {
                 frame.dispose();
-                Battle b = new Battle(selected);
+                Battle b = new Battle(selected, player);
                 b.showExploringPopup();
             }
         });

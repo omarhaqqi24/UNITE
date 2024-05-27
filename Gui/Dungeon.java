@@ -57,26 +57,32 @@ class Dungeon {
             }
             String el = elements[numMonsters];
 
+            String gif = "";
             switch (el) {
                 case "Api":
-                    wildMonsters.add(new MonsterApi(namaMonster[numNama], lvl));
+                    gif = "agumon2.gif";
+                    wildMonsters.add(new MonsterApi(namaMonster[numNama], lvl, gif));
                     break;
             
                 case "Angin":
-                wildMonsters.add(new MonsterAngin(namaMonster[numNama], lvl));
-                break;
+                    gif = "elang2.gif";
+                    wildMonsters.add(new MonsterAngin(namaMonster[numNama], lvl, gif));
+                    break;
         
                 case "Es":
-                wildMonsters.add(new MonsterEs(namaMonster[numNama], lvl));
-                break;
+                    gif = "gabumon2.gif";
+                    wildMonsters.add(new MonsterEs(namaMonster[numNama], lvl, gif));
+                    break;
         
                 case "Tanah":
-                wildMonsters.add(new MonsterTanah(namaMonster[numNama], lvl));
-                break;
+                    gif = "monster_tanah2.gif";
+                    wildMonsters.add(new MonsterTanah(namaMonster[numNama], lvl, gif));
+                    break;
         
                 case "Air":
-                wildMonsters.add(new MonsterAir(namaMonster[numNama], lvl));
-                break;
+                    gif = "air2.gif";
+                    wildMonsters.add(new MonsterAir(namaMonster[numNama], lvl, gif));
+                    break;
         
                 default:
                     break;

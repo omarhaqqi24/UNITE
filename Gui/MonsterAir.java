@@ -8,6 +8,10 @@ public class MonsterAir extends Monster {
     MonsterAir(String name, int level) {
         super(name, "Air", "Api", level, "_air2_.gif");  // Water is strong against Fire
     }
+    
+    MonsterAir(String name, int level, String gif) {
+        super(name, "Air", "Api", level, gif);  // Water is strong against Fire
+    }
 
     MonsterAir(String name, int level, int hp, int ep, boolean changed) {
         super(name, level, hp, ep, "Air", "Api", changed, "_air2_.gif");

@@ -9,6 +9,10 @@ public class MonsterApi extends Monster {
         super (name, "Api", "Es", level, "_api2_.gif");
     }
 
+    MonsterApi (String name, int level, String gif) {
+        super (name, "Api", "Es", level, gif);
+    }
+
     MonsterApi(String name, int level, int hp, int ep, boolean changed) {
         super(name, level, hp, ep, "Api", "Es", changed, "_api2_.gif");
     }

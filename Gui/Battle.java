@@ -4,19 +4,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Battle {
+    Player player = new Player("Player");
     private ArrayList<Monster> selected;
-    private ArrayList<Monster> enemy;
+    private Monster enemy;
+    private Monster playerMonster;
 
-    public Battle(ArrayList<Monster> selected) {
+    public Battle(ArrayList<Monster> selected, Player player) {
         this.selected = selected;
     }
 
-    public Battle(ArrayList<Monster> selected, ArrayList<Monster> enemy) {
-        this.selected = selected;
+    public Battle(Monster playerMonster, Monster enemy, Player player) {
+        this.playerMonster = playerMonster;
         this.enemy = enemy;
 
         JFrame frame = new JFrame("UNITE");
@@ -26,7 +34,6 @@ public class Battle {
         frame.add(layeredPane);
 
         placeComponents(layeredPane, frame);
-        addRandomImages(layeredPane);
         frame.setVisible(true);
 
         // Play background music
@@ -106,7 +113,12 @@ public class Battle {
                     dialog.dispose();
                     ArrayList<Monster> selectedMonster = new ArrayList<>();
                     selectedMonster.add(monster);
-                    new Battle(selectedMonster);
+                    
+                    Random ran = new Random();
+                    ArrayList<Monster> monsterList = player.getEnemyMonsters();
+                    Monster enemyMonster = monsterList.get(ran.nextInt(monsterList.size()));
+
+                    new Battle(monster, enemyMonster, player);
                 }
             });
             pokemonPanel.add(selectButton, BorderLayout.EAST);
@@ -119,6 +131,40 @@ public class Battle {
     }
 
     private void placeComponents(JLayeredPane layeredPane, JFrame frame) {
+        Random random = new Random();
+
+        InputStream fontStream = null;
+        Font retro = null;
+        try {
+            fontStream = new FileInputStream("Aset/retro.ttf");
+            retro = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+            retro = retro.deriveFont(20f); // Mengatur ukuran font menjadi 24
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (FontFormatException | IOException e1) {
+            e1.printStackTrace();
+        } finally {
+            if (fontStream != null) {
+                try {
+                    fontStream.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+        
+        JLabel plHP = new JLabel("HP: " + playerMonster.getHp());
+        plHP.setFont(retro);
+        plHP.setForeground(Color.WHITE);
+        plHP.setBounds(10, 25, 300, 50);
+        layeredPane.add(plHP, Integer.valueOf(3));
+
+        JLabel enHP = new JLabel("HP: " + enemy.getHp());
+        enHP.setFont(retro);
+        enHP.setForeground(Color.WHITE);
+        enHP.setBounds(940, 25, 300, 50);
+        layeredPane.add(enHP, Integer.valueOf(3));
+
         ImageIcon originalIcon = new ImageIcon("Aset/battle.jpg");
         Image originalImage = originalIcon.getImage();
         // Mengubah ukuran gambar sesuai dengan ukuran frame
@@ -129,7 +175,7 @@ public class Battle {
         layeredPane.add(imageLabel, Integer.valueOf(0));
         
         //nama hero kita
-        JLabel pokemon = new JLabel("Chairman");
+        JLabel pokemon = new JLabel(playerMonster.getName());
         pokemon.setBackground(null);
         pokemon.setBounds(20,-290,400,600);
         pokemon.setFont(new Font("Arial", Font.ITALIC,20));
@@ -145,7 +191,7 @@ public class Battle {
         layeredPane.add(BarHpLabel, Integer.valueOf(2));
 
         //nama hero musuh 
-        JLabel pokemon2 = new JLabel("Nama");
+        JLabel pokemon2 = new JLabel(enemy.getName());
         pokemon2.setBackground(null);
         pokemon2.setBounds(1155,-290,400,600);
         pokemon2.setFont(new Font("Arial", Font.ITALIC,20));
@@ -164,9 +210,39 @@ public class Battle {
         Image image = atkIcon.getImage(); // Mendapatkan gambar sebagai objek Image
         Image resizedImage = image.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon = new ImageIcon(resizedImage); // Mengonversi kembali ke ImageIcon
-        JLabel atkLabel = new JLabel(resizedatkIcon); // Membuat label dengan gambar yang sudah diresize
-        atkLabel.setBounds(616, 422, 400, 300);
-        layeredPane.add(atkLabel, Integer.valueOf(2));
+        JLabel elementalAtk = new JLabel(resizedatkIcon); // Membuat label dengan gambar yang sudah diresize
+        elementalAtk.setBounds(616, 422, 400, 300);
+        layeredPane.add(elementalAtk, Integer.valueOf(2));
+
+        elementalAtk.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked (MouseEvent e) {
+                playerMonster.elementalAttack(enemy);
+                plHP.setText("HP: " + playerMonster.getHp());
+                enHP.setText("HP: " + enemy.getHp());
+                
+                int enemyAtt = random.nextInt(3) + 1;
+            
+                switch (enemyAtt) {
+                    case 1:
+                        enemy.basicAttack(playerMonster);
+                        break;
+                
+                    case 2:
+                    enemy.specialAttack(playerMonster);
+                    break;
+            
+                    case 3:
+                    enemy.elementalAttack(playerMonster);
+                    break;
+            
+                    default:
+                        break;
+                }
+                plHP.setText("HP: " + playerMonster.getHp());
+                enHP.setText("HP: " + enemy.getHp());
+            }
+        });
 
         JButton logokucing = new JButton("1");
         logokucing.setBounds(772, 550, 70, 60);
@@ -189,9 +265,9 @@ public class Battle {
         Image image3 = atkIcon3.getImage(); // Mendapatkan gambar sebagai objek Image
         Image resizedImage3 = image3.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon3= new ImageIcon(resizedImage3); // Mengonversi kembali ke ImageIcon
-        JLabel atkLabel3 = new JLabel(resizedatkIcon3); // Membuat label dengan gambar yang sudah diresize
-        atkLabel3.setBounds(336, 425, 400, 300);
-        layeredPane.add(atkLabel3, Integer.valueOf(2));
+        JLabel flee = new JLabel(resizedatkIcon3); // Membuat label dengan gambar yang sudah diresize
+        flee.setBounds(336, 425, 400, 300);
+        layeredPane.add(flee, Integer.valueOf(2));
 
         
         JButton kabur  = new JButton("3");
@@ -202,9 +278,39 @@ public class Battle {
         Image image4 = atkIcon4.getImage(); // Mendapatkan gambar sebagai objek Image
         Image resizedImage4 = image4.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon4= new ImageIcon(resizedImage4); // Mengonversi kembali ke ImageIcon
-        JLabel atkLabel4 = new JLabel(resizedatkIcon4); // Membuat label dengan gambar yang sudah diresize
-        atkLabel4.setBounds(523, 422, 400, 300);
-        layeredPane.add(atkLabel4, Integer.valueOf(3));
+        JLabel basicAtk = new JLabel(resizedatkIcon4); // Membuat label dengan gambar yang sudah diresize
+        basicAtk.setBounds(523, 422, 400, 300);
+        layeredPane.add(basicAtk, Integer.valueOf(3));
+
+        basicAtk.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked (MouseEvent e) {
+                playerMonster.basicAttack(enemy);
+                plHP.setText("HP: " + playerMonster.getHp());
+                enHP.setText("HP: " + enemy.getHp());
+                
+                int enemyAtt = random.nextInt(3) + 1;
+            
+                switch (enemyAtt) {
+                    case 1:
+                        enemy.basicAttack(playerMonster);
+                        break;
+                
+                    case 2:
+                    enemy.specialAttack(playerMonster);
+                    break;
+            
+                    case 3:
+                    enemy.elementalAttack(playerMonster);
+                    break;
+            
+                    default:
+                        break;
+                }
+                plHP.setText("HP: " + playerMonster.getHp());
+                enHP.setText("HP: " + enemy.getHp());
+            }
+        });
 
         JButton spesial  = new JButton("A");
         spesial.setBounds(684, 550, 70, 60);
@@ -214,39 +320,53 @@ public class Battle {
         Image image5 = atkIcon5.getImage(); // Mendapatkan
         Image scaledImage5 = image5.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon5= new ImageIcon(scaledImage5); // Mengonversi kembali ke ImageIcon
-        JLabel atkLabel5 = new JLabel(resizedatkIcon5); // Membuat label dengan gambar yang sudah diresize
-        atkLabel5.setBounds(429,423, 400, 300);
-        layeredPane.add(atkLabel5, Integer.valueOf(3));
+        JLabel specialAtk = new JLabel(resizedatkIcon5); // Membuat label dengan gambar yang sudah diresize
+        specialAtk.setBounds(429,423, 400, 300);
+        layeredPane.add(specialAtk, Integer.valueOf(3));
+        
+        specialAtk.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked (MouseEvent e) {
+                playerMonster.specialAttack(enemy);
+                plHP.setText("HP: " + playerMonster.getHp());
+                enHP.setText("HP: " + enemy.getHp());
+                
+                int enemyAtt = random.nextInt(3) + 1;
+            
+                switch (enemyAtt) {
+                    case 1:
+                        enemy.basicAttack(playerMonster);
+                        break;
+                
+                    case 2:
+                    enemy.specialAttack(playerMonster);
+                    break;
+            
+                    case 3:
+                    enemy.elementalAttack(playerMonster);
+                    break;
+            
+                    default:
+                        break;
+                }
+                plHP.setText("HP: " + playerMonster.getHp());
+                enHP.setText("HP: " + enemy.getHp());
+            }
+        });
 
         //ini untuk spesial attack 
         JButton attack  = new JButton("4");
         attack.setBounds(598, 550, 70, 60);
         layeredPane.add(attack, Integer.valueOf(2));
 
-        // Menampilkan gambar monster yang dipilih
-        int x = 100; // Posisi awal X
-        for (Monster monster : selected) {
-            ImageIcon monsterIcon = new ImageIcon("Aset/" + monster.getGif());
-            JLabel monsterLabel = new JLabel(monsterIcon);
-            monsterLabel.setBounds(x, 200, 200, 400);
-            layeredPane.add(monsterLabel, Integer.valueOf(3));
-            pokemon.setText(monster.getName());
-            x += 250; // Meningkatkan posisi X untuk menampilkan monster berikutnya
-        }
-    }
-    private void addRandomImages(JLayeredPane layeredPane) {
-        ImageIcon imageIcon;
-        JLabel imageLabel;
-        String[] randomImageNames = {"air2.gif", "monster tanah2.gif", "gabumon2.gif", "agumon2.gif", "elang2.gif"};
-        ArrayList<Component> components = new ArrayList<>();
-        for (String imageName : randomImageNames) {
-            imageIcon = new ImageIcon("Aset/" + imageName);
-            imageLabel = new JLabel(imageIcon);
-            imageLabel.setBounds(900, 200, 200, 400);
-            components.add(imageLabel);
-        }
-        Component random = components.get(new Random().nextInt(components.size()));
-        layeredPane.add(random, Integer.valueOf(3));
-        random.setVisible(true);
+        ImageIcon monPlayerImg = new ImageIcon("Aset/" + playerMonster.getGif());
+        JLabel monPlayer = new JLabel(monPlayerImg);
+        monPlayer.setBounds(100, 300, 200, 300);
+        layeredPane.add(monPlayer, Integer.valueOf(7));
+
+        ImageIcon monEnemyImg = new ImageIcon("Aset/" + enemy.getGif());
+        JLabel monEnemy = new JLabel(monEnemyImg);
+        monEnemy.setBounds(900, 300, 200, 300);
+        layeredPane.add(monEnemy, Integer.valueOf(7));
     }
 }

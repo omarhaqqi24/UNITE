@@ -8,6 +8,10 @@ public class MonsterTanah extends Monster {
     MonsterTanah(String name, int level) {
         super(name, "Tanah", "Air", level, "_tanah2_.gif");  // Ground is strong against Electric
     }
+    
+    MonsterTanah(String name, int level, String gif) {
+        super(name, "Tanah", "Air", level, gif);  // Ground is strong against Electric
+    }
 
     MonsterTanah(String name, int level, int hp, int ep, boolean changed) {
         super(name, level, hp, ep, "Tanah", "Air", changed, "_tanah2_.gif");
