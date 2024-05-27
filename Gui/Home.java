@@ -155,7 +155,10 @@ public class Home {
         upButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                playSound("Aset/pika.wav");
+                frame.dispose();
+                SwingUtilities.invokeLater(() -> {
+                    new Upgrade(player);
+                });
             }
         });
 

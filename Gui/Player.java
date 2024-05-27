@@ -143,34 +143,14 @@ class Player {
         }
     }
 
-    public void upgradeMonster() {
-        System.out.println("Select a monster to upgrade:");
-        int count = 1;
-        for (Monster m : monsters) {
-            System.out.println(count++ + ". " + m.getName() + " (lvl." + m.getLevel() + ")");
-            System.out.println("- Element: " + m.getElement());
-            System.out.println("- Strength VS: " + m.getStrengthAgainst());
-            System.out.println("- HP: " + m.getHp());
-            System.out.println("- XP: " + m.getEp());
-            System.out.println("- Changed: " + m.getChanged());
-            System.out.println();
-        }
-
-        System.out.print("Select Monster: ");
-
-        int choice = scanner.nextInt();
-        System.out.println();
-        if (choice < 1 || choice > monsters.size()) {
-            System.out.println("Invalid choice. Please choose again.");
-            
+    public boolean upgradeMonster(Monster selectedMonster) {
+        if (selectedMonster.canLevelUp()) {
+            selectedMonster.levelUp();
+            return true;
         } else {
-            Monster selectedMonster = monsters.get(choice - 1);
-            if (selectedMonster.canLevelUp()) {
-                selectedMonster.levelUp();
-            } else {
-                System.out.println(selectedMonster.getName() + " does not have enough XP to level up.");
-                System.out.println();
-            }
+            System.out.println(selectedMonster.getName() + " does not have enough XP to level up.");
+            System.out.println();
+            return false;
         }
     }
 
