@@ -2,19 +2,19 @@ package Gui;
 
 public class MonsterAngin extends Monster {
     MonsterAngin(String name) {
-        super(name, "Angin", "Tanah", "_angin_.gif");  // Wind is strong against Fire
+        super(name, "Angin", "Tanah", "_angin2_.gif");  // Wind is strong against Fire
     }
     
     MonsterAngin(String name, int level) {
-        super(name, "Angin", "Tanah", level, "_angin_.gif");  // Wind is strong against Fire
+        super(name, "Angin", "Tanah", level, "_angin2_.gif");  // Wind is strong against Fire
     }
 
     MonsterAngin(String name, int level, int hp, int ep, boolean changed) {
-        super(name, level, hp, ep, "Angin", "Tanah", changed, "_angin_.gif");
+        super(name, level, hp, ep, "Angin", "Tanah", changed, "_angin2_.gif");
     }
 
     MonsterAngin(Monster a) {
-        super(a.getName(), a.getLevel(), a.getHp(), a.getEp(), "Angin", "Tanah", true, "_angin_.gif");
+        super(a.getName(), a.getLevel(), a.getHp(), a.getEp(), "Angin", "Tanah", true, "_angin2_.gif");
     }
 
     @Override

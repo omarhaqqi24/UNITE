@@ -73,24 +73,6 @@ class Player {
         }
         System.out.println();
 
-        // for (int i = 0; i < 3; i++) {
-        //     System.out.println("Select monster " + (i + 1) + ":");
-        //     for (int j = 0; j < monsters.size(); j++) {
-        //         System.out.println((j + 1) + ". " + monsters.get(j).getName() + " (Level: " +
-        //                 monsters.get(j).getLevel() + ", HP: " + monsters.get(j).getHp() + ")");
-        //     }
-
-        //     System.out.print("Select: ");
-        //     int choice = scanner.nextInt();
-        //     if (choice < 1 || choice > monsters.size()) {
-        //         System.out.println("Invalid choice. Please choose again.");
-        //         i--;
-        //     } else {
-        //         selectedMonsters.add(monsters.get(choice - 1));
-        //     }
-        //     System.out.println();
-        // }
-
         System.out.println("Exploring the dungeon...");
 
         boolean fight = true;

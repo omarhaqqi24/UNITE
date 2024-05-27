@@ -2,31 +2,123 @@ package Gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-import javax.sound.sampled.*;
+import java.util.Random;
 
 public class Battle {
     private ArrayList<Monster> selected;
+    private ArrayList<Monster> enemy;
 
-    public Battle (ArrayList<Monster> selected) {
+    public Battle(ArrayList<Monster> selected) {
         this.selected = selected;
+    }
+
+    public Battle(ArrayList<Monster> selected, ArrayList<Monster> enemy) {
+        this.selected = selected;
+        this.enemy = enemy;
+
         JFrame frame = new JFrame("UNITE");
         frame.setSize(1920, 1080);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLayeredPane layeredPane = new JLayeredPane();
         frame.add(layeredPane);
-      
+
         placeComponents(layeredPane, frame);
+        addRandomImages(layeredPane);
         frame.setVisible(true);
 
-
-        // Putar musik latar belakang
-        playBackgroundMusic("Aset/naruto.wav");
+        // Play background music
+        BackgroundMusicManager.getInstance().playBackgroundMusic("Aset/naruto.wav");
     }
 
-    private static void placeComponents(JLayeredPane layeredPane, JFrame frame) {
+    public void showExploringPopup() {
+        JDialog dialog = new JDialog();
+        dialog.setSize(300, 200);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(new BorderLayout());
+        JLabel label = new JLabel("Exploring dungeon...", SwingConstants.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 16));
+        dialog.add(label, BorderLayout.CENTER);
+        dialog.setUndecorated(true);
+        dialog.setModal(true);
+
+        Timer timer = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+                showEnemyFoundPopup();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+        dialog.setVisible(true);
+    }
+
+    private void showEnemyFoundPopup() {
+        JDialog dialog = new JDialog();
+        dialog.setSize(300, 200);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(new BorderLayout());
+        JLabel label = new JLabel("Enemy found!", SwingConstants.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 16));
+        dialog.add(label, BorderLayout.CENTER);
+        dialog.setUndecorated(true);
+        dialog.setModal(true);
+
+        Timer timer = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+                showSelectPokemonForBattlePopup();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+        dialog.setVisible(true);
+    }
+
+    private void showSelectPokemonForBattlePopup() {
+        JDialog dialog = new JDialog();
+        dialog.setSize(400, 650);  // Adjust size to fit images
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(new BorderLayout());
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        
+        for (Monster monster : selected) {
+            JPanel pokemonPanel = new JPanel(new BorderLayout());
+            
+            // Adding Pokemon image
+            ImageIcon pokemonIcon = new ImageIcon("Aset/" + monster.getGif());
+            JLabel pokemonLabel = new JLabel(pokemonIcon);
+            pokemonPanel.add(pokemonLabel, BorderLayout.WEST);
+            
+            // Adding Pokemon name and level
+            JLabel nameLabel = new JLabel(monster.getName() + " (Lvl." + monster.getLevel() + ")", SwingConstants.CENTER);
+            pokemonPanel.add(nameLabel, BorderLayout.CENTER);
+            
+            // Adding select button
+            JButton selectButton = new JButton("Select");
+            selectButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dialog.dispose();
+                    ArrayList<Monster> selectedMonster = new ArrayList<>();
+                    selectedMonster.add(monster);
+                    new Battle(selectedMonster);
+                }
+            });
+            pokemonPanel.add(selectButton, BorderLayout.EAST);
+            
+            panel.add(pokemonPanel);
+        }
+        
+        dialog.add(panel, BorderLayout.CENTER);
+        dialog.setVisible(true);
+    }
+
+    private void placeComponents(JLayeredPane layeredPane, JFrame frame) {
         ImageIcon originalIcon = new ImageIcon("Aset/battle.jpg");
         Image originalImage = originalIcon.getImage();
         // Mengubah ukuran gambar sesuai dengan ukuran frame
@@ -35,8 +127,6 @@ public class Battle {
         JLabel imageLabel = new JLabel(scaledIcon);
         imageLabel.setBounds(0, 0, 1296,729);
         layeredPane.add(imageLabel, Integer.valueOf(0));
-
-        //icon vs
         
         //nama hero kita
         JLabel pokemon = new JLabel("Chairman");
@@ -55,7 +145,7 @@ public class Battle {
         layeredPane.add(BarHpLabel, Integer.valueOf(2));
 
         //nama hero musuh 
-        JLabel pokemon2 = new JLabel("Chairman");
+        JLabel pokemon2 = new JLabel("Nama");
         pokemon2.setBackground(null);
         pokemon2.setBounds(1155,-290,400,600);
         pokemon2.setFont(new Font("Arial", Font.ITALIC,20));
@@ -121,9 +211,9 @@ public class Battle {
         layeredPane.add(spesial, Integer.valueOf(2));
 
         ImageIcon atkIcon5 = new ImageIcon("Aset/spessAtbg.png");
-        Image image5 = atkIcon5.getImage(); // Mendapatkan gambar sebagai objek Image
-        Image resizedImage5 = image5.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
-        ImageIcon resizedatkIcon5= new ImageIcon(resizedImage5); // Mengonversi kembali ke ImageIcon
+        Image image5 = atkIcon5.getImage(); // Mendapatkan
+        Image scaledImage5 = image5.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        ImageIcon resizedatkIcon5= new ImageIcon(scaledImage5); // Mengonversi kembali ke ImageIcon
         JLabel atkLabel5 = new JLabel(resizedatkIcon5); // Membuat label dengan gambar yang sudah diresize
         atkLabel5.setBounds(429,423, 400, 300);
         layeredPane.add(atkLabel5, Integer.valueOf(3));
@@ -132,30 +222,31 @@ public class Battle {
         JButton attack  = new JButton("4");
         attack.setBounds(598, 550, 70, 60);
         layeredPane.add(attack, Integer.valueOf(2));
-        
-    }
 
-    // Method untuk memutar musik latar belakang
-    private static void playBackgroundMusic(String musicPath) {
-        try {
-            File musicFile = new File(musicPath);
-            if (musicFile.exists()) {
-                System.out.println("Playing sound from: " + musicFile.getAbsolutePath());
-                // Menggunakan Java Sound API untuk memutar musik
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(musicFile);
-                Clip clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.start();
-                clip.loop(Clip.LOOP_CONTINUOUSLY); // Loop the background music
-            } else {
-                System.out.println("File not found: " + musicFile.getAbsolutePath());
-            }
-        } catch (UnsupportedAudioFileException e) {
-            System.err.println("Unsupported audio file: " + e.getMessage());
-        } catch (LineUnavailableException e) {
-            System.err.println("Line unavailable: " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Menampilkan gambar monster yang dipilih
+        int x = 100; // Posisi awal X
+        for (Monster monster : selected) {
+            ImageIcon monsterIcon = new ImageIcon("Aset/" + monster.getGif());
+            JLabel monsterLabel = new JLabel(monsterIcon);
+            monsterLabel.setBounds(x, 200, 200, 400);
+            layeredPane.add(monsterLabel, Integer.valueOf(3));
+            pokemon.setText(monster.getName());
+            x += 250; // Meningkatkan posisi X untuk menampilkan monster berikutnya
         }
+    }
+    private void addRandomImages(JLayeredPane layeredPane) {
+        ImageIcon imageIcon;
+        JLabel imageLabel;
+        String[] randomImageNames = {"air2.gif", "monster tanah2.gif", "gabumon2.gif", "agumon2.gif", "elang2.gif"};
+        ArrayList<Component> components = new ArrayList<>();
+        for (String imageName : randomImageNames) {
+            imageIcon = new ImageIcon("Aset/" + imageName);
+            imageLabel = new JLabel(imageIcon);
+            imageLabel.setBounds(900, 200, 200, 400);
+            components.add(imageLabel);
+        }
+        Component random = components.get(new Random().nextInt(components.size()));
+        layeredPane.add(random, Integer.valueOf(3));
+        random.setVisible(true);
     }
 }

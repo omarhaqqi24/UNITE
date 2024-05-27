@@ -61,8 +61,7 @@ public class SellectPokemon {
             @Override
             public void mouseClicked(MouseEvent e) {
                 frame.dispose();
-                Battle b = new Battle(selected);
-                b.showExploringPopup();
+                showExploringPopup(selected);
             }
         });
         layeredPane.add(nxt, Integer.valueOf(3));
@@ -225,6 +224,91 @@ public class SellectPokemon {
 
         for (JLabel jl : selectBtn) layeredPane.add(jl, Integer.valueOf(3));
         for (JLabel jl : pokemon) layeredPane.add(jl, Integer.valueOf(3));
+    }
+
+    private void showExploringPopup(ArrayList<Monster> selected) {
+        JDialog dialog = new JDialog();
+        dialog.setSize(300, 200);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(new BorderLayout());
+        JLabel label = new JLabel("Exploring dungeon...", SwingConstants.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 16));
+        dialog.add(label, BorderLayout.CENTER);
+        dialog.setUndecorated(true);
+        dialog.setModal(true);
+
+        Timer timer = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+                showEnemyFoundPopup(selected);
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+        dialog.setVisible(true);
+    }
+
+    private void showEnemyFoundPopup(ArrayList<Monster> selected) {
+        JDialog dialog = new JDialog();
+        dialog.setSize(300, 200);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(new BorderLayout());
+        JLabel label = new JLabel("Enemy found!", SwingConstants.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 16));
+        dialog.add(label, BorderLayout.CENTER);
+        dialog.setUndecorated(true);
+        dialog.setModal(true);
+
+        Timer timer = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+                showSelectPokemonForBattlePopup(selected);
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+        dialog.setVisible(true);
+    }
+
+    private void showSelectPokemonForBattlePopup(ArrayList<Monster> selected) {
+        JDialog dialog = new JDialog();
+        dialog.setSize(400, 650);  // Adjust size to fit images
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(new BorderLayout());
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        
+        for (Monster monster : selected) {
+            JPanel pokemonPanel = new JPanel(new BorderLayout());
+            
+            // Adding Pokemon image
+            ImageIcon pokemonIcon = new ImageIcon("Aset/" + monster.getGif());
+            JLabel pokemonLabel = new JLabel(pokemonIcon);
+            pokemonPanel.add(pokemonLabel, BorderLayout.WEST);
+            
+            // Adding Pokemon name and level
+            JLabel nameLabel = new JLabel(monster.getName() + " (Lvl." + monster.getLevel() + ")", SwingConstants.CENTER);
+            pokemonPanel.add(nameLabel, BorderLayout.CENTER);
+            
+            // Adding select button
+            JButton selectButton = new JButton("Select");
+            selectButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dialog.dispose();
+                    ArrayList<Monster> selectedMonster = new ArrayList<>();
+                    selectedMonster.add(monster);
+                    new Battle(selectedMonster);
+                }
+            });
+            pokemonPanel.add(selectButton, BorderLayout.EAST);
+            
+            panel.add(pokemonPanel);
+        }
+        
+        dialog.add(panel, BorderLayout.CENTER);
+        dialog.setVisible(true);
     }
 
     public static void main(String[] args) {

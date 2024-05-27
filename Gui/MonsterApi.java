@@ -2,19 +2,19 @@ package Gui;
 
 public class MonsterApi extends Monster {
     MonsterApi (String name) {
-        super (name, "Api", "Es", "_api_.gif");
+        super (name, "Api", "Es", "_api2_.gif");
     }
 
     MonsterApi (String name, int level) {
-        super (name, "Api", "Es", level, "_api_.gif");
+        super (name, "Api", "Es", level, "_api2_.gif");
     }
 
     MonsterApi(String name, int level, int hp, int ep, boolean changed) {
-        super(name, level, hp, ep, "Api", "Es", changed, "_api_.gif");
+        super(name, level, hp, ep, "Api", "Es", changed, "_api2_.gif");
     }
 
     MonsterApi(Monster a) {
-        super(a.getName(), a.getLevel(), a.getHp(), a.getEp(), "Api", "Es", true, "_api_.gif");
+        super(a.getName(), a.getLevel(), a.getHp(), a.getEp(), "Api", "Es", true, "_api2_.gif");
     }
 
     @Override
