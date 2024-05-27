@@ -1,6 +1,11 @@
 package Gui;
 
 import java.util.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 
 class Player {
@@ -210,94 +215,135 @@ class Player {
         }
     }
 
-    public void evolution () {
-        System.out.println("Select Monster to evolve");
-        int count = 1;
-        for (Monster m : monsters) {
-            if (m.getChanged()) continue;
-            System.out.println(count++ + ". " + m.getName() + " - " + m.getElement() + " (" + m.getLevel() + ")");
+    public void evolution (Monster m, JLabel r, JLabel l, JLabel succ, JLabel ext) {
+        int choo = monsters.indexOf(m) + 1;
+        String e1 = "";
+        String e2 = "";
+        
+        ImageIcon eves = new ImageIcon("Aset/ev_es.png");
+        ImageIcon evair = new ImageIcon("Aset/ev_air.png");
+        ImageIcon evangin = new ImageIcon("Aset/ev_angin.png");
+        ImageIcon evapi = new ImageIcon("Aset/ev_api.png");
+        ImageIcon evtanah = new ImageIcon("Aset/ev_tanah.png");
+        
+        switch (m.getElement()) {
+            case "Air":
+                r.setIcon(evangin);
+                l.setIcon(eves);
+                e1 = "Angin";
+                e2 = "Es";
+                break;
+        
+            case "Es":
+                r.setIcon(evair);
+                l.setIcon(evtanah);
+                e1 = "Air";
+                e2 = "Tanah";
+                break;
+    
+            case "Tanah":
+                r.setIcon(eves);
+                l.setIcon(evapi);
+                e1 = "Es";
+                e2 = "Api";
+                break;
+    
+            case "Api":
+                r.setIcon(evtanah);
+                l.setIcon(evangin);
+                e1 = "Tanah";
+                e2 = "Angin";
+                break;
+    
+            case "Angin":
+                r.setIcon(evapi);
+                l.setIcon(evair);
+                e1 = "Api";
+                e2 = "Air";
+                break;
+    
+            default:
+                break;
         }
 
-        if (count == 1) {
-            System.out.println("No monster can evolve!");
-        } else {
-            System.out.print("Choose: ");
-            int choo = scanner.nextInt();
-            System.out.println();
-            Monster selected = monsters.get(choo-1);
+        final String e1a = e1;
+        final String e2a = e2;
 
-            String e1 = "";
-            String e2 = "";
+        r.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                switch (e1a) {
+                    case "Air":
+                        monsters.add(choo-1, new MonsterAir(m));
+                        monsters.remove(choo);
+                        break;
+                
+                    case "Es":
+                        monsters.add(choo-1, new MonsterEs(m));
+                        monsters.remove(choo);
+                        break;
             
-            switch (selected.getElement()) {
-                case "Air":
-                    e1 = "Angin";
-                    e2 = "Es";
-                    break;
+                    case "Tanah":
+                        monsters.add(choo-1, new MonsterTanah(m));
+                        monsters.remove(choo);
+                        break;
             
-                case "Es":
-                    e1 = "Air";
-                    e2 = "Tanah";
-                    break;
-        
-                case "Tanah":
-                    e1 = "Es";
-                    e2 = "Api";
-                    break;
-        
-                case "Api":
-                    e1 = "Tanah";
-                    e2 = "Angin";
-                    break;
-        
-                case "Angin":
-                    e1 = "Api";
-                    e2 = "Air";
-                    break;
-        
-                default:
-                    break;
+                    case "Api":
+                        monsters.add(choo-1, new MonsterApi(m));
+                        monsters.remove(choo);
+                        break;
+            
+                    case "Angin":
+                        monsters.add(choo-1, new MonsterAngin(m));
+                        monsters.remove(choo);
+                        break;
+                }
+
+                System.out.println(monsters.get(choo-1).getName() + "'s element chaned to " + monsters.get(choo-1).getElement());
+                System.out.println();
+
+                succ.setVisible(true);
+                ext.setVisible(true);
             }
-            
-            System.out.println("Evolve to:");
-            System.out.println("1. " + e1);
-            System.out.println("2. " + e2);
-            System.out.print("Choose: ");
-            int cho = scanner.nextInt();
-            System.out.println();
+        });
 
-            String selected2 = cho == 1? e1: e2;
+        l.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                switch (e2a) {
+                    case "Air":
+                        monsters.add(choo-1, new MonsterAir(m));
+                        monsters.remove(choo);
+                        break;
+                
+                    case "Es":
+                        monsters.add(choo-1, new MonsterEs(m));
+                        monsters.remove(choo);
+                        break;
             
-            switch (selected2) {
-                case "Air":
-                    monsters.add(choo-1, new MonsterAir(selected));
-                    monsters.remove(choo);
-                    break;
+                    case "Tanah":
+                        monsters.add(choo-1, new MonsterTanah(m));
+                        monsters.remove(choo);
+                        break;
             
-                case "Es":
-                    monsters.add(choo-1, new MonsterEs(selected));
-                    monsters.remove(choo);
-                    break;
-        
-                case "Tanah":
-                    monsters.add(choo-1, new MonsterTanah(selected));
-                    monsters.remove(choo);
-                    break;
-        
-                case "Api":
-                    monsters.add(choo-1, new MonsterApi(selected));
-                    monsters.remove(choo);
-                    break;
-        
-                case "Angin":
-                    monsters.add(choo-1, new MonsterAngin(selected));
-                    monsters.remove(choo);
-                    break;
+                    case "Api":
+                        monsters.add(choo-1, new MonsterApi(m));
+                        monsters.remove(choo);
+                        break;
+            
+                    case "Angin":
+                        monsters.add(choo-1, new MonsterAngin(m));
+                        monsters.remove(choo);
+                        break;
+                }
+
+                System.out.println(monsters.get(choo-1).getName() + "'s element chaned to " + monsters.get(choo-1).getElement());
+                System.out.println();
+
+                succ.setVisible(true);
+                ext.setVisible(true);
             }
-
-            System.out.println(monsters.get(choo-1).getName() + "'s element chaned to " + monsters.get(choo-1).getElement());
-            System.out.println();
-        }
+        });
     }
 
     public void closeScanner() {
