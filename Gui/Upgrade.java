@@ -146,21 +146,6 @@ public class Upgrade {
         ArrayList<Monster> selected = new ArrayList<>();
         LinkedList<AtomicBoolean> s = new LinkedList<>();
 
-        ImageIcon next = new ImageIcon("Aset/next.gif");
-        JLabel nxt = new JLabel(next);
-        nxt.setBounds(1170, 25, 82, 89);
-        nxt.setVisible(false);
-        nxt.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked (MouseEvent e) {
-                frame.dispose();
-                SwingUtilities.invokeLater(() -> {
-                    new Battle(selected);
-                });
-            }
-        });
-        layeredPane.add(nxt, Integer.valueOf(3));
-
         JLabel nameLevel = new JLabel("-");
         nameLevel.setFont(retro);
         nameLevel.setBounds(110, 140, 300, 40);
