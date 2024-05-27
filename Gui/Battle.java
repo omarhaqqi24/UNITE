@@ -51,7 +51,7 @@ public class Battle {
         dialog.setUndecorated(true);
         dialog.setModal(true);
 
-        Timer timer = new Timer(3000, new ActionListener() {
+        Timer timer = new Timer(1500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dialog.dispose();
@@ -74,7 +74,7 @@ public class Battle {
         dialog.setUndecorated(true);
         dialog.setModal(true);
 
-        Timer timer = new Timer(3000, new ActionListener() {
+        Timer timer = new Timer(1500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dialog.dispose();
@@ -152,6 +152,46 @@ public class Battle {
                 }
             }
         }
+
+        JLabel defeeat = new JLabel("You Defeated");
+        defeeat.setOpaque(true);
+        defeeat.setBackground(Color.GREEN);
+        defeeat.setBounds(200, 200, 700, 170);
+        defeeat.setForeground(Color.BLACK);
+        defeeat.setHorizontalAlignment(SwingConstants.CENTER);
+        defeeat.setVerticalAlignment(SwingConstants.TOP);
+        defeeat.setVisible(false);
+        layeredPane.add(defeeat, Integer.valueOf(5));
+
+        JLabel exit = new JLabel("Exit");
+        exit.setOpaque(true);
+        exit.setBackground(Color.BLACK);
+        exit.setBounds(220, 260, 80, 60);
+        exit.setForeground(Color.GREEN);
+        exit.setVisible(false);
+        layeredPane.add(exit, Integer.valueOf(6));
+
+        exit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new Home(player);
+            }
+        });
+
+        JLabel next = new JLabel("Next");
+        next.setOpaque(true);
+        next.setBackground(Color.BLACK);
+        next.setBounds(760, 260, 80, 60);
+        next.setForeground(Color.GREEN);
+        next.setVisible(false);
+        layeredPane.add(next, Integer.valueOf(6));
+
+        next.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new Battle(selected, player);
+            }
+        });
         
         JLabel plHP = new JLabel("HP: " + playerMonster.getHp());
         plHP.setFont(retro);
@@ -221,6 +261,14 @@ public class Battle {
                 plHP.setText("HP: " + playerMonster.getHp());
                 enHP.setText("HP: " + enemy.getHp());
                 
+                plHP.setText("HP: " + playerMonster.getHp());
+                if (enemy.getHp() <= 0) {
+                    defeeat.setText("You Win!");
+                    defeeat.setVisible(true);
+                    exit.setVisible(true);
+                    next.setVisible(true);
+                }
+                
                 int enemyAtt = random.nextInt(3) + 1;
             
                 switch (enemyAtt) {
@@ -239,8 +287,15 @@ public class Battle {
                     default:
                         break;
                 }
-                plHP.setText("HP: " + playerMonster.getHp());
+
                 enHP.setText("HP: " + enemy.getHp());
+                if (playerMonster.getHp() <= 0) {
+                    selected.remove(playerMonster);
+                    defeeat.setText("You Lose!");
+                    defeeat.setVisible(true);
+                    exit.setVisible(true);
+                    next.setVisible(true);
+                }
             }
         });
 
@@ -289,6 +344,14 @@ public class Battle {
                 plHP.setText("HP: " + playerMonster.getHp());
                 enHP.setText("HP: " + enemy.getHp());
                 
+                plHP.setText("HP: " + playerMonster.getHp());
+                if (enemy.getHp() <= 0) {
+                    defeeat.setText("You Win!");
+                    defeeat.setVisible(true);
+                    exit.setVisible(true);
+                    next.setVisible(true);
+                }
+                
                 int enemyAtt = random.nextInt(3) + 1;
             
                 switch (enemyAtt) {
@@ -307,8 +370,15 @@ public class Battle {
                     default:
                         break;
                 }
-                plHP.setText("HP: " + playerMonster.getHp());
+
                 enHP.setText("HP: " + enemy.getHp());
+                if (playerMonster.getHp() <= 0) {
+                    selected.remove(playerMonster);
+                    defeeat.setText("You Lose!");
+                    defeeat.setVisible(true);
+                    exit.setVisible(true);
+                    next.setVisible(true);
+                }
             }
         });
 
@@ -331,6 +401,14 @@ public class Battle {
                 plHP.setText("HP: " + playerMonster.getHp());
                 enHP.setText("HP: " + enemy.getHp());
                 
+                plHP.setText("HP: " + playerMonster.getHp());
+                if (enemy.getHp() <= 0) {
+                    defeeat.setText("You Win!");
+                    defeeat.setVisible(true);
+                    exit.setVisible(true);
+                    next.setVisible(true);
+                }
+                
                 int enemyAtt = random.nextInt(3) + 1;
             
                 switch (enemyAtt) {
@@ -349,8 +427,15 @@ public class Battle {
                     default:
                         break;
                 }
-                plHP.setText("HP: " + playerMonster.getHp());
+
                 enHP.setText("HP: " + enemy.getHp());
+                if (playerMonster.getHp() <= 0) {
+                    selected.remove(playerMonster);
+                    defeeat.setText("You Lose!");
+                    defeeat.setVisible(true);
+                    exit.setVisible(true);
+                    next.setVisible(true);
+                }
             }
         });
 

@@ -32,6 +32,13 @@ public class Home {
         layeredPane.add(welcomeLabel, Integer.valueOf(2));
 
         frame.setVisible(true);
+        ImageIcon imageIcon2 = new ImageIcon("Aset/backHome.png");
+        JLabel imageLabel2 = new JLabel(imageIcon2);
+        imageLabel2.setBounds(0, 0, imageIcon2.getIconWidth(), imageIcon2.getIconHeight());
+        layeredPane.add(imageLabel2, Integer.valueOf(2));
+        JButton backButton = new JButton("wellcome");
+        backButton.setBounds(30,35,50,50);
+        layeredPane.add(backButton, Integer.valueOf(1));
 
         // Membuat label untuk tombol explore dungeon
         ImageIcon exploreIcon = new ImageIcon("Aset/explore.png");
@@ -94,6 +101,15 @@ public class Home {
         layeredPane.add(exitButton, Integer.valueOf(2));
 
         // Menambahkan ActionListener untuk setiap tombol
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                playSound("Aset/pika.wav");
+                frame.dispose();
+                Welcome.main(null);
+            }
+        });
+
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -170,7 +186,7 @@ public class Home {
                 playSound("Aset/pika.wav");
                 frame.dispose();
                 SwingUtilities.invokeLater(() -> {
-                    new Evolution(player);
+                    Evolution.main(null);
                 });
             }
         });
@@ -186,7 +202,7 @@ public class Home {
 
     public static void placeComponents(JLayeredPane layeredPane, JFrame frame) {
 
-        ImageIcon imageIcon1 = new ImageIcon("Aset/poke.jpg");
+        ImageIcon imageIcon1 = new ImageIcon("Aset/bghome1.png");
         Image image1 = imageIcon1.getImage();
         Image resizedImage1 = image1.getScaledInstance(1296, 729, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon1 = new ImageIcon(resizedImage1);

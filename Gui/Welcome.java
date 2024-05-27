@@ -28,10 +28,15 @@ public class Welcome {
     }
 
     private static void placeComponents(JLayeredPane layeredPane, JFrame frame) {
-        ImageIcon imageIcon = new ImageIcon("Aset/poke.gif");
+        ImageIcon imageIcon = new ImageIcon("Aset/g2.jpg");
         JLabel imageLabel = new JLabel(imageIcon);
         imageLabel.setBounds(0, -70, imageIcon.getIconWidth(), imageIcon.getIconHeight());
         layeredPane.add(imageLabel, Integer.valueOf(0));
+
+        ImageIcon imageIcon2 = new ImageIcon("Aset/UNITE3a.png");
+        JLabel imageLabel2 = new JLabel(imageIcon2);
+        imageLabel2.setBounds(0, 0, imageIcon2.getIconWidth(), imageIcon2.getIconHeight());
+        layeredPane.add(imageLabel2, Integer.valueOf(2));
 
         // Membuat label untuk tombol NEW GAME
         ImageIcon playIcon = new ImageIcon("Aset/play.png");
@@ -66,6 +71,10 @@ public class Welcome {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 NewGame.main(null);
+
+                // stopBackgroundMusic();  // Hentikan musik sebelum membuka frame baru
+                // frame.dispose();
+                // Battle.main(null);
             }
         });
 
@@ -106,8 +115,6 @@ public class Welcome {
 
                 try {
                     File myObj = new File("save/user.txt");
-                    if (myObj == null) SaveNotFound.throwItemSaveNotFound("user.txt Not Found");
-                    
                     Scanner myReader = new Scanner(myObj);
 
                     System.out.println("Select an user:");
@@ -143,7 +150,7 @@ public class Welcome {
 
                         LinkedList<JLabel> labels = new LinkedList<>();
 
-                        int y = 45;
+                        int y = 60;
                         while (myReader.hasNextLine()) {
                             String data = myReader.nextLine();
                             users.add(data);
@@ -297,10 +304,10 @@ public class Welcome {
                 System.out.println("Playing sound from: " + musicFile.getAbsolutePath());
                 // Menggunakan Java Sound API untuk memutar musik
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(musicFile);
-                Clip clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.start();
-                clip.loop(Clip.LOOP_CONTINUOUSLY); // Loop the background music
+                Clip backgroundClip = AudioSystem.getClip();
+                backgroundClip.open(audioInputStream);
+                backgroundClip.start();
+                backgroundClip.loop(Clip.LOOP_CONTINUOUSLY); // Loop the background music
             } else {
                 System.out.println("File not found: " + musicFile.getAbsolutePath());
             }
