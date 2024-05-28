@@ -83,6 +83,20 @@ public class Upgrade {
             }
         }
 
+        JLabel back = new JLabel("<");
+        back.setFont(new Font("Arial", Font.PLAIN, 50));
+        back.setForeground(Color.WHITE);
+        back.setBounds(20, 20, 50, 50);
+        layeredPane.add(back, Integer.valueOf(7));
+
+        back.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                frame.dispose();
+                new Home(player);
+            }
+        });
+
         JLabel xClose = new JLabel("X");
         xClose.setBounds(350, 190, 435, 37);
         xClose.setFont(retro2);
@@ -123,6 +137,7 @@ public class Upgrade {
                 upgraded.setVisible(false);
                 lvlTo.setVisible(false);
                 xClose.setVisible(false);
+                new Home(player);
             }
         });
 

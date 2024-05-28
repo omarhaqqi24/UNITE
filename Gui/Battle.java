@@ -14,16 +14,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Battle {
-    Player player = new Player("Player");
+    Player player;
     private ArrayList<Monster> selected;
     private Monster enemy;
     private Monster playerMonster;
 
     public Battle(ArrayList<Monster> selected, Player player) {
         this.selected = selected;
+        this.player = player;
     }
 
-    public Battle(Monster playerMonster, Monster enemy, Player player) {
+    public Battle(ArrayList<Monster> selected, Monster playerMonster, Monster enemy, Player player) {
+        this.selected = selected;
+        this.player = player;
         this.playerMonster = playerMonster;
         this.enemy = enemy;
 
@@ -118,7 +121,7 @@ public class Battle {
                     ArrayList<Monster> monsterList = player.getEnemyMonsters();
                     Monster enemyMonster = monsterList.get(ran.nextInt(monsterList.size()));
 
-                    new Battle(monster, enemyMonster, player);
+                    new Battle(selected, monster, enemyMonster, player);
                 }
             });
             pokemonPanel.add(selectButton, BorderLayout.EAST);
@@ -189,7 +192,9 @@ public class Battle {
         next.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new Battle(selected, player);
+                frame.dispose();
+                Battle b = new Battle(selected, player);
+                b.showExploringPopup();
             }
         });
         
@@ -215,7 +220,7 @@ public class Battle {
         layeredPane.add(imageLabel, Integer.valueOf(0));
         
         //nama hero kita
-        JLabel pokemon = new JLabel(playerMonster.getName());
+        JLabel pokemon = new JLabel(playerMonster.getName() + " - " + playerMonster.getElement());
         pokemon.setBackground(null);
         pokemon.setBounds(20,-290,400,600);
         pokemon.setFont(new Font("Arial", Font.ITALIC,20));
@@ -231,9 +236,9 @@ public class Battle {
         layeredPane.add(BarHpLabel, Integer.valueOf(2));
 
         //nama hero musuh 
-        JLabel pokemon2 = new JLabel(enemy.getName());
+        JLabel pokemon2 = new JLabel(enemy.getName() + " - " + enemy.getElement());
         pokemon2.setBackground(null);
-        pokemon2.setBounds(1155,-290,400,600);
+        pokemon2.setBounds(950,-290,400,600);
         pokemon2.setFont(new Font("Arial", Font.ITALIC,20));
         layeredPane.add(pokemon2, Integer.valueOf(2));
         pokemon2.setForeground(Color.WHITE);
@@ -246,20 +251,37 @@ public class Battle {
         BarHpLabel2.setBounds(750, 0, 700, 103);
         layeredPane.add(BarHpLabel2, Integer.valueOf(2));
 
+        ImageIcon atkIcon2 = new ImageIcon("Aset/healbg.png");
+        Image image2 = atkIcon2.getImage(); // Mendapatkan gambar sebagai objek Image
+        Image resizedImage2 = image2.getScaledInstance(100, 75, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        ImageIcon resizedatkIcon2= new ImageIcon(resizedImage2); // Mengonversi kembali ke ImageIcon
+        JLabel atkLabel2 = new JLabel(resizedatkIcon2); // Membuat label dengan gambar yang sudah diresize
+        atkLabel2.setBounds(250 + 130, 424 + 130, 100, 75);
+        layeredPane.add(atkLabel2, Integer.valueOf(2));
+
+        
+        ImageIcon atkIcon3 = new ImageIcon("Aset/kaburbg.png");
+        Image image3 = atkIcon3.getImage(); // Mendapatkan gambar sebagai objek Image
+        Image resizedImage3 = image3.getScaledInstance(100, 75, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        ImageIcon resizedatkIcon3= new ImageIcon(resizedImage3); // Mengonversi kembali ke ImageIcon
+        JLabel flee = new JLabel(resizedatkIcon3); // Membuat label dengan gambar yang sudah diresize
+        flee.setBounds(336 + 130, 425 + 130, 100, 75);
+        layeredPane.add(flee, Integer.valueOf(2));
+
         ImageIcon atkIcon = new ImageIcon("Aset/elementbg.png");
         Image image = atkIcon.getImage(); // Mendapatkan gambar sebagai objek Image
-        Image resizedImage = image.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        Image resizedImage = image.getScaledInstance(100, 75, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon = new ImageIcon(resizedImage); // Mengonversi kembali ke ImageIcon
         JLabel elementalAtk = new JLabel(resizedatkIcon); // Membuat label dengan gambar yang sudah diresize
-        elementalAtk.setBounds(616, 422, 400, 300);
+        elementalAtk.setBounds(616 + 130, 422 + 130, 100, 75);
         layeredPane.add(elementalAtk, Integer.valueOf(2));
 
         elementalAtk.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked (MouseEvent e) {
                 playerMonster.elementalAttack(enemy);
-                plHP.setText("HP: " + playerMonster.getHp());
-                enHP.setText("HP: " + enemy.getHp());
+                plHP.setText("HP: " + Math.max(0, playerMonster.getHp()));
+                enHP.setText("HP: " + Math.max(0, enemy.getHp()));
                 
                 plHP.setText("HP: " + playerMonster.getHp());
                 if (enemy.getHp() <= 0) {
@@ -288,61 +310,41 @@ public class Battle {
                         break;
                 }
 
-                enHP.setText("HP: " + enemy.getHp());
+                plHP.setText("HP: " + Math.max(0, playerMonster.getHp()));
+                enHP.setText("HP: " + Math.max(0, enemy.getHp()));
                 if (playerMonster.getHp() <= 0) {
+                    System.out.println(selected == null);
                     selected.remove(playerMonster);
-                    defeeat.setText("You Lose!");
-                    defeeat.setVisible(true);
-                    exit.setVisible(true);
-                    next.setVisible(true);
+
+                    if (selected.size() == 0) {
+                        defeeat.setText("You Lose! No Monster left");
+                        defeeat.setVisible(true);
+                        exit.setVisible(true);
+                    } else {
+                        defeeat.setText("You Lose!");
+                        defeeat.setVisible(true);
+                        exit.setVisible(true);
+                        next.setVisible(true);
+                    }
                 }
             }
         });
 
-        JButton logokucing = new JButton("1");
-        logokucing.setBounds(772, 550, 70, 60);
-        layeredPane.add(logokucing, Integer.valueOf(2));
-
-        ImageIcon atkIcon2 = new ImageIcon("Aset/healbg.png");
-        Image image2 = atkIcon2.getImage(); // Mendapatkan gambar sebagai objek Image
-        Image resizedImage2 = image2.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
-        ImageIcon resizedatkIcon2= new ImageIcon(resizedImage2); // Mengonversi kembali ke ImageIcon
-        JLabel atkLabel2 = new JLabel(resizedatkIcon2); // Membuat label dengan gambar yang sudah diresize
-        atkLabel2.setBounds(250, 424, 400, 300);
-        layeredPane.add(atkLabel2, Integer.valueOf(2));
-
-        JButton item  = new JButton("2");
-        item.setBounds(415, 550, 70,60);
-        layeredPane.add(item, Integer.valueOf(2));
-
-        
-        ImageIcon atkIcon3 = new ImageIcon("Aset/kaburbg.png");
-        Image image3 = atkIcon3.getImage(); // Mendapatkan gambar sebagai objek Image
-        Image resizedImage3 = image3.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
-        ImageIcon resizedatkIcon3= new ImageIcon(resizedImage3); // Mengonversi kembali ke ImageIcon
-        JLabel flee = new JLabel(resizedatkIcon3); // Membuat label dengan gambar yang sudah diresize
-        flee.setBounds(336, 425, 400, 300);
-        layeredPane.add(flee, Integer.valueOf(2));
-
-        
-        JButton kabur  = new JButton("3");
-        kabur.setBounds(510, 550, 70, 60);
-        layeredPane.add(kabur, Integer.valueOf(2));
-
         ImageIcon atkIcon4 = new ImageIcon("Aset/pedangBg.png");
         Image image4 = atkIcon4.getImage(); // Mendapatkan gambar sebagai objek Image
-        Image resizedImage4 = image4.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        Image resizedImage4 = image4.getScaledInstance(100, 75, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon4= new ImageIcon(resizedImage4); // Mengonversi kembali ke ImageIcon
         JLabel basicAtk = new JLabel(resizedatkIcon4); // Membuat label dengan gambar yang sudah diresize
-        basicAtk.setBounds(523, 422, 400, 300);
+        basicAtk.setBounds(523 + 130, 422 + 130, 100, 75);
         layeredPane.add(basicAtk, Integer.valueOf(3));
 
         basicAtk.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked (MouseEvent e) {
                 playerMonster.basicAttack(enemy);
-                plHP.setText("HP: " + playerMonster.getHp());
-                enHP.setText("HP: " + enemy.getHp());
+
+                plHP.setText("HP: " + Math.max(0, playerMonster.getHp()));
+                enHP.setText("HP: " + Math.max(0, enemy.getHp()));
                 
                 plHP.setText("HP: " + playerMonster.getHp());
                 if (enemy.getHp() <= 0) {
@@ -371,35 +373,41 @@ public class Battle {
                         break;
                 }
 
-                enHP.setText("HP: " + enemy.getHp());
+                plHP.setText("HP: " + Math.max(0, playerMonster.getHp()));
+                enHP.setText("HP: " + Math.max(0, enemy.getHp()));
                 if (playerMonster.getHp() <= 0) {
+                    System.out.println(selected == null);
                     selected.remove(playerMonster);
-                    defeeat.setText("You Lose!");
-                    defeeat.setVisible(true);
-                    exit.setVisible(true);
-                    next.setVisible(true);
+
+                    if (selected.size() == 0) {
+                        defeeat.setText("You Lose! No Monster left");
+                        defeeat.setVisible(true);
+                        exit.setVisible(true);
+                    } else {
+                        defeeat.setText("You Lose!");
+                        defeeat.setVisible(true);
+                        exit.setVisible(true);
+                        next.setVisible(true);
+                    }
                 }
             }
         });
 
-        JButton spesial  = new JButton("A");
-        spesial.setBounds(684, 550, 70, 60);
-        layeredPane.add(spesial, Integer.valueOf(2));
-
         ImageIcon atkIcon5 = new ImageIcon("Aset/spessAtbg.png");
         Image image5 = atkIcon5.getImage(); // Mendapatkan
-        Image scaledImage5 = image5.getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
+        Image scaledImage5 = image5.getScaledInstance(100, 75, Image.SCALE_SMOOTH); // Mengubah ukuran gambar
         ImageIcon resizedatkIcon5= new ImageIcon(scaledImage5); // Mengonversi kembali ke ImageIcon
         JLabel specialAtk = new JLabel(resizedatkIcon5); // Membuat label dengan gambar yang sudah diresize
-        specialAtk.setBounds(429,423, 400, 300);
+        specialAtk.setBounds(429 + 120,423 + 130,130, 75);
         layeredPane.add(specialAtk, Integer.valueOf(3));
         
         specialAtk.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked (MouseEvent e) {
                 playerMonster.specialAttack(enemy);
-                plHP.setText("HP: " + playerMonster.getHp());
-                enHP.setText("HP: " + enemy.getHp());
+
+                plHP.setText("HP: " + Math.max(0, playerMonster.getHp()));
+                enHP.setText("HP: " + Math.max(0, enemy.getHp()));
                 
                 plHP.setText("HP: " + playerMonster.getHp());
                 if (enemy.getHp() <= 0) {
@@ -428,21 +436,26 @@ public class Battle {
                         break;
                 }
 
-                enHP.setText("HP: " + enemy.getHp());
+                plHP.setText("HP: " + Math.max(0, playerMonster.getHp()));
+                enHP.setText("HP: " + Math.max(0, enemy.getHp()));
                 if (playerMonster.getHp() <= 0) {
+                    System.out.println(selected == null);
+                    
                     selected.remove(playerMonster);
-                    defeeat.setText("You Lose!");
-                    defeeat.setVisible(true);
-                    exit.setVisible(true);
-                    next.setVisible(true);
+
+                    if (selected.size() == 0) {
+                        defeeat.setText("You Lose! No Monster left");
+                        defeeat.setVisible(true);
+                        exit.setVisible(true);
+                    } else {
+                        defeeat.setText("You Lose!");
+                        defeeat.setVisible(true);
+                        exit.setVisible(true);
+                        next.setVisible(true);
+                    }
                 }
             }
         });
-
-        //ini untuk spesial attack 
-        JButton attack  = new JButton("4");
-        attack.setBounds(598, 550, 70, 60);
-        layeredPane.add(attack, Integer.valueOf(2));
 
         ImageIcon monPlayerImg = new ImageIcon("Aset/" + playerMonster.getGif());
         JLabel monPlayer = new JLabel(monPlayerImg);

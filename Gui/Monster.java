@@ -69,7 +69,7 @@ abstract class Monster {
     }
 
     public void setHp(int hp) {
-        this.hp = hp;
+        this.hp = Math.max(0, hp);
     }
 
     public int getEp() {

@@ -34,6 +34,20 @@ public class Evolution {
 
     public static void placeComponents(JLayeredPane layeredPane, JFrame frame, Player player) {
 
+        JLabel back = new JLabel("<");
+        back.setFont(new Font("Arial", Font.PLAIN, 50));
+        back.setForeground(Color.WHITE);
+        back.setBounds(20, 20, 50, 50);
+        layeredPane.add(back, Integer.valueOf(7));
+
+        back.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                frame.dispose();
+                new Home(player);
+            }
+        });
+
         InputStream fontStream2 = null;
         Font retro2 = null;
         try {
@@ -237,10 +251,5 @@ public class Evolution {
         }
 
         for (JLabel jl : pokemon) layeredPane.add(jl, Integer.valueOf(3));
-    }
-
-    public static void main(String[] args) {
-        // Membuat objek Home
-        new Evolution(new Player("Player"));
     }
 }

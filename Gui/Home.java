@@ -186,7 +186,7 @@ public class Home {
                 playSound("Aset/pika.wav");
                 frame.dispose();
                 SwingUtilities.invokeLater(() -> {
-                    Evolution.main(null);
+                    new Evolution(player);
                 });
             }
         });
